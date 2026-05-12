@@ -1,0 +1,6 @@
+@Transit.Api_HostAddress = http://localhost:5210
+
+GET {{Transit.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
