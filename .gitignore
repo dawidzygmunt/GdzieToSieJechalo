@@ -1,0 +1,42 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+.vs/
+*.suo
+*.userprefs
+
+# NuGet
+**/packages/
+**/[Pp]ackages/
+
+# Build results
+artifacts/
+
+# Logs
+**/logs/
+
+# Secrets / environment
+**/appsettings.*.json
+!**/appsettings.json
+!**/appsettings.Development.json
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (panel/mobile)
+**/node_modules/
+**/dist/
+**/.next/
+**/build/
+
+# Rider / VS Code
+.idea/
+.vscode/
+*.swp
+
+# Testcontainers
+.testcontainers.properties
