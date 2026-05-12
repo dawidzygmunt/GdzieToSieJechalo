@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Transit.Api/Transit.Api.csproj" />
+    <Project Path="src/Transit.Application/Transit.Application.csproj" />
+    <Project Path="src/Transit.Domain/Transit.Domain.csproj" />
+    <Project Path="src/Transit.Infrastructure/Transit.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Transit.Api.IntegrationTests/Transit.Api.IntegrationTests.csproj" />
+    <Project Path="tests/Transit.Application.UnitTests/Transit.Application.UnitTests.csproj" />
+    <Project Path="tests/Transit.Domain.UnitTests/Transit.Domain.UnitTests.csproj" />
+  </Folder>
+</Solution>
