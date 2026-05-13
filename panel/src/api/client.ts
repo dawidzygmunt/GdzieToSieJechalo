@@ -42,8 +42,16 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 };
 
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('[API] Response:', response.config.url, 'Status:', response.status);
+    return response;
+  },
   async (error: AxiosError) => {
+    console.error('[API] Error:', error.config?.url, 'Status:', error.response?.status);
+    if (error.response?.data) {
+      console.error('[API] Error data:', error.response.data);
+    }
+
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     // Skip refresh for login endpoint

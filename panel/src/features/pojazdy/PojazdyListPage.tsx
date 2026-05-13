@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DataTable, type Column, Pagination, StatusBadge } from '@/components/common';
 import { usePojazdy } from '@/hooks/usePojazdy';
 import { usePagination } from '@/hooks/usePagination';
+import { AddPojazdDialog } from './AddPojazdDialog';
 import type { PojazdListDto } from '@/types/pojazd.types';
 
 const columns: Column<PojazdListDto>[] = [
@@ -19,6 +21,7 @@ const columns: Column<PojazdListDto>[] = [
 ];
 
 export function PojazdyListPage() {
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const { page, pageSize, setPage, setPageSize } = usePagination();
 
   const { data, isLoading } = usePojazdy({
@@ -33,7 +36,7 @@ export function PojazdyListPage() {
           <h1 className="text-2xl font-bold text-slate-900">Pojazdy</h1>
           <p className="text-slate-500 mt-1">Zarządzaj flotą pojazdów</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsAddDialogOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Dodaj pojazd
         </Button>
@@ -57,6 +60,8 @@ export function PojazdyListPage() {
           onPageSizeChange={setPageSize}
         />
       )}
+
+      <AddPojazdDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
   );
 }

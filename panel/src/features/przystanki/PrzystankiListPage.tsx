@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { DataTable, type Column, Pagination, SearchInput, StatusBadge } from '@/components/common';
 import { usePrzystanki } from '@/hooks/usePrzystanki';
 import { usePagination } from '@/hooks/usePagination';
+import { AddPrzystanekDialog } from './AddPrzystanekDialog';
 import type { PrzystanekListDto } from '@/types/przystanek.types';
 
 const columns: Column<PrzystanekListDto>[] = [
@@ -25,6 +26,7 @@ const columns: Column<PrzystanekListDto>[] = [
 
 export function PrzystankiListPage() {
   const [search, setSearch] = useState('');
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const { page, pageSize, setPage, setPageSize } = usePagination();
 
   const { data, isLoading } = usePrzystanki({
@@ -40,7 +42,7 @@ export function PrzystankiListPage() {
           <h1 className="text-2xl font-bold text-slate-900">Przystanki</h1>
           <p className="text-slate-500 mt-1">Zarządzaj przystankami w sieci komunikacyjnej</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsAddDialogOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Dodaj przystanek
         </Button>
@@ -73,6 +75,8 @@ export function PrzystankiListPage() {
           onPageSizeChange={setPageSize}
         />
       )}
+
+      <AddPrzystanekDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
   );
 }

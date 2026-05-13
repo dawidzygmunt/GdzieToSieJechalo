@@ -25,21 +25,39 @@ public static class DbInitializer
 
         await SeedSlownikow.SeedAsync(db);
 
+        // Always seed admin user (in all environments)
+        await SeedAdminUser(userManager);
+
         if (isDevelopment)
         {
             await SeedDemo.SeedAsync(db);
-            await SeedAdminUser(userManager);
         }
     }
 
     private static async Task SeedAdminUser(UserManager<ApplicationUser> userManager)
     {
         const string adminEmail = "admin@transit.local";
-        if (await userManager.FindByEmailAsync(adminEmail) is null)
+        const string adminPassword = "Admin123!";
+
+        var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
+        if (existingAdmin is null)
         {
-            var admin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
-            await userManager.CreateAsync(admin, "Admin123!");
+            var admin = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                EmailConfirmed = true
+            };
+            await userManager.CreateAsync(admin, adminPassword);
             await userManager.AddToRoleAsync(admin, Roles.Admin);
+        }
+        else
+        {
+            // Ensure existing admin has Admin role
+            if (!await userManager.IsInRoleAsync(existingAdmin, Roles.Admin))
+            {
+                await userManager.AddToRoleAsync(existingAdmin, Roles.Admin);
+            }
         }
     }
 }

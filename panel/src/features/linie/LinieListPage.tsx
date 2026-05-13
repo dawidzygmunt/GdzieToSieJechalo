@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { DataTable, type Column, Pagination, SearchInput, StatusBadge } from '@/components/common';
 import { useLinie } from '@/hooks/useLinie';
 import { usePagination } from '@/hooks/usePagination';
+import { AddLiniaDialog } from './AddLiniaDialog';
 import type { LiniaListDto } from '@/types/linia.types';
 
 const columns: Column<LiniaListDto>[] = [
@@ -20,6 +21,7 @@ const columns: Column<LiniaListDto>[] = [
 
 export function LinieListPage() {
   const [search, setSearch] = useState('');
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const { page, pageSize, setPage, setPageSize } = usePagination();
 
   const { data, isLoading } = useLinie({
@@ -35,7 +37,7 @@ export function LinieListPage() {
           <h1 className="text-2xl font-bold text-slate-900">Linie</h1>
           <p className="text-slate-500 mt-1">Zarządzaj liniami komunikacyjnymi</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsAddDialogOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Dodaj linię
         </Button>
@@ -68,6 +70,8 @@ export function LinieListPage() {
           onPageSizeChange={setPageSize}
         />
       )}
+
+      <AddLiniaDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
   );
 }

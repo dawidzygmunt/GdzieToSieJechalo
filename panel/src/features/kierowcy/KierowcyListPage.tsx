@@ -5,6 +5,7 @@ import { DataTable, type Column, Pagination, SearchInput, StatusBadge } from '@/
 import { useKierowcy } from '@/hooks/useKierowcy';
 import { usePagination } from '@/hooks/usePagination';
 import { formatDate } from '@/lib/utils';
+import { AddKierowcaDialog } from './AddKierowcaDialog';
 import type { KierowcaListDto } from '@/types/kierowca.types';
 
 const columns: Column<KierowcaListDto>[] = [
@@ -25,6 +26,7 @@ const columns: Column<KierowcaListDto>[] = [
 
 export function KierowcyListPage() {
   const [search, setSearch] = useState('');
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const { page, pageSize, setPage, setPageSize } = usePagination();
 
   const { data, isLoading } = useKierowcy({
@@ -40,7 +42,7 @@ export function KierowcyListPage() {
           <h1 className="text-2xl font-bold text-slate-900">Kierowcy</h1>
           <p className="text-slate-500 mt-1">Zarządzaj kierowcami</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsAddDialogOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Dodaj kierowcę
         </Button>
@@ -73,6 +75,8 @@ export function KierowcyListPage() {
           onPageSizeChange={setPageSize}
         />
       )}
+
+      <AddKierowcaDialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} />
     </div>
   );
 }
