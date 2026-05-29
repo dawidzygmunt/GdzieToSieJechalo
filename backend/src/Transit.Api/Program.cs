@@ -27,7 +27,12 @@ builder.Host.UseSerilog((ctx, lc) =>
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(opts =>
+    {
+        opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(opts =>
     {
         opts.TokenValidationParameters = new TokenValidationParameters
