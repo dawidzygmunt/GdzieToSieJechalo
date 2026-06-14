@@ -17,8 +17,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
+        var connectionString = ConnectionStringResolver.Resolve(config.GetConnectionString("DefaultConnection"));
+
         services.AddDbContext<TransitDbContext>(opts =>
-            opts.UseNpgsql(config.GetConnectionString("DefaultConnection"),
+            opts.UseNpgsql(connectionString,
                 npg => npg.MigrationsAssembly(typeof(TransitDbContext).Assembly.FullName)));
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<TransitDbContext>());

@@ -14,8 +14,9 @@ public class TransitDbContextFactory : IDesignTimeDbContextFactory<TransitDbCont
             .AddEnvironmentVariables()
             .Build();
 
-        var connectionString = config.GetConnectionString("DefaultConnection")
-            ?? "Host=localhost;Port=5432;Database=transit_db;Username=transit_user;Password=transit_pass";
+        var connectionString = ConnectionStringResolver.Resolve(
+            config.GetConnectionString("DefaultConnection")
+            ?? "Host=localhost;Port=5432;Database=transit_db;Username=transit_user;Password=transit_pass");
 
         var opts = new DbContextOptionsBuilder<TransitDbContext>()
             .UseNpgsql(connectionString)
