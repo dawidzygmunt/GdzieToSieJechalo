@@ -31,7 +31,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: src/Transit.Api/Dockerfile
+      dockerfile: Dockerfile
     container_name: transit_backend
     environment:
       ASPNETCORE_ENVIRONMENT: Development
