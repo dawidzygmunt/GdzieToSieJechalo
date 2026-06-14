@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+**/logs/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+**/.git/
+**/.gitignore
+**/Dockerfile*
+**/docker-compose*
+**/README.md
+**/plan.md
+tests/

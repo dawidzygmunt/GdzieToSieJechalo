@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: transit_postgres
+    environment:
+      POSTGRES_DB: transit_db
+      POSTGRES_USER: transit_user
+      POSTGRES_PASSWORD: transit_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - transit_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U transit_user -d transit_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: transit_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@transit.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: src/Transit.Api/Dockerfile
+    container_name: transit_backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=transit_db;Username=transit_user;Password=transit_pass"
+      Cors__AllowedOrigins__0: "*"
+    ports:
+      - "5000:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  panel:
+    build:
+      context: ./panel
+      dockerfile: Dockerfile
+    container_name: transit_panel
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  transit_pgdata:

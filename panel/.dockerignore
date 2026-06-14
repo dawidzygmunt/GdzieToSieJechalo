@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.vite
+.git
+.gitignore
+.vscode
+.idea
+Dockerfile
+.dockerignore
+README*.md
+front-plan.md
+TESTING.md
