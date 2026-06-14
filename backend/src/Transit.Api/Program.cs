@@ -79,7 +79,11 @@ builder.Services.AddEndpointsApiExplorer();
 var app = builder.Build();
 
 if (!app.Environment.IsEnvironment("Testing"))
-    await DbInitializer.InitializeAsync(app.Services, app.Environment.IsDevelopment());
+{
+    var seedDemo = app.Environment.IsDevelopment()
+        || app.Configuration.GetValue<bool>("Demo:Seed");
+    await DbInitializer.InitializeAsync(app.Services, seedDemo);
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

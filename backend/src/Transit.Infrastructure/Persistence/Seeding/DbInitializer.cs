@@ -8,7 +8,7 @@ namespace Transit.Infrastructure.Persistence.Seeding;
 
 public static class DbInitializer
 {
-    public static async Task InitializeAsync(IServiceProvider services, bool isDevelopment)
+    public static async Task InitializeAsync(IServiceProvider services, bool seedDemo)
     {
         using var scope = services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<TransitDbContext>();
@@ -25,10 +25,9 @@ public static class DbInitializer
 
         await SeedSlownikow.SeedAsync(db);
 
-        // Always seed admin user (in all environments)
         await SeedAdminUser(userManager);
 
-        if (isDevelopment)
+        if (seedDemo)
         {
             await SeedDemo.SeedAsync(db);
         }
